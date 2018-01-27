@@ -11,11 +11,11 @@ output:
   ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(fig.width=14, fig.height=10)
-knitr::opts_chunk$set(echo = TRUE, fig.align="center")
+knitr::opts_chunk$set(echo = FALSE, fig.align="center")
 ```
 
 
-``` {r import, message=FALSE, warning=FALSE,echo=TRUE}
+``` {r import, message=FALSE, warning=FALSE}
 library(vegan)
 library(MASS)
 library(ggplot2)
