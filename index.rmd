@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = FALSE, fig.align="center")
 ```
 
 
-``` {r import, message=FALSE, warning=FALSE}
+``` {r import, message=FALSE, warning=FALSE,echo = FALSE}
 library(vegan)
 library(MASS)
 library(ggplot2)
@@ -44,13 +44,13 @@ physeq
 #Alpha Diversity
 ###Observed Species
 
-```{r}
+```{r,echo = FALSE}
 plot_richness(physeq, x="Location",color="Location", measures=c("Observed"),)+geom_boxplot(aes(x=Location, y=value, color=Location), alpha=0.05)+ylab("Observed Species")
 
 ```
 
 ##Simpson Diversity
-```{r}
+```{r,echo = FALSE}
 
 plot_richness(physeq, x="Location",color="Location", measures=c("Simpson"),)+geom_boxplot(aes(x=Location, y=value, color=Location), alpha=0.05)+ylab("Simpson Diversity")
 
@@ -59,7 +59,7 @@ plot_richness(physeq, x="Location",color="Location", measures=c("Simpson"),)+geo
 
 #Taxa Plots
 
-```{r filteringForFamily2}
+```{r filteringForFamily2,echo = FALSE}
 
 
 GPr  = transform_sample_counts(physeq, function(x) x / sum(x) ) #transform samples based on relative abundance
@@ -77,7 +77,7 @@ GenusLevel = filter_taxa(GPrGenus, function(x) mean(x) > 1e-2, TRUE) #filter out
 Stars (*) on plot represent unadjusted p values for the test for each taxa (Wilcox or KW test depending on number of groups), pairwise adjusted p values are in the table below (FDR adjustment)
 Table is filtered to only show taxa with a adjusted p value below 0.1
 
-```{r PhylumRA, warning=FALSE}
+```{r PhylumRA, warning=FALSE,echo = FALSE}
 df <- psmelt(PhylumLevel)
 df$Abundance=df$Abundance*100
 Trtdata <- ddply(df, c("Phylum", "Location"), summarise,
@@ -88,7 +88,7 @@ Trtdata <- ddply(df, c("Phylum", "Location"), summarise,
 )
 ```
 
-```{r TreatmentPlot2}
+```{r TreatmentPlot2,echo = FALSE}
 p <- ggbarplot(df, x = "Location", y = "Abundance",add = c("mean_se"),#"mean_se"
                color = "black", palette = "cbPalette", facet.by="Phylum",
                line.color = "gray", line.size = 0.4, short.panel.labs = TRUE, p.adjust.method = "fdr", fill= "Location") + stat_compare_means(aes(group = Location), label = "..p.signif..",label.y = 7) 
@@ -113,7 +113,7 @@ FilteredResults
 
 ##Family Level Relative Abundance
 ###Family level by Location
-```{r,warning=FALSE}
+```{r,warning=FALSE,echo = FALSE}
 df <- psmelt(FamilyLevel)
 df$Abundance=df$Abundance*100
 Trtdata <- ddply(df, c("Family", "Location"), summarise,
@@ -124,7 +124,7 @@ Trtdata <- ddply(df, c("Family", "Location"), summarise,
 )
 ```
 
-```{r TreatmentPlot4}
+```{r TreatmentPlot4,echo = FALSE}
 p <- ggbarplot(df, x = "Location", y = "Abundance",add = c("mean_se"),#"mean_se"
                color = "black", palette = "cbPalette", facet.by="Family",
                line.color = "gray", line.size = 0.4, short.panel.labs = TRUE, p.adjust.method = "bonferroni", fill= "Location") + stat_compare_means(aes(group = Location), label = "..p.signif..",label.y = 7) 
@@ -154,7 +154,7 @@ FilteredResults
 -Ellipses represent 95% CI for the mean of each group
 
 ##PCoA 
-```{r PCoA, warning=FALSE}
+```{r PCoA, warning=FALSE,echo = FALSE}
 ord=ordinate(physeq,"PCoA", "wunifrac")
 ordplot=plot_ordination(physeq, ord,"samples", color="Location")#+geom_point(size=4)+scale_colour_manual(values=cbPalette)+scale_fill_manual(values=cbPalette)
 ordplot+ stat_ellipse(type= "norm",geom = "polygon", alpha = 1/4, aes(fill = Location))+ theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())#+ theme(legend.justification=c(1,0), legend.position=c(1,0))
@@ -165,18 +165,18 @@ ordplot+ stat_ellipse(type= "norm",geom = "polygon", alpha = 1/4, aes(fill = Loc
 #PERMANOVAs
 
 ##Location
-``` {r PERMANOVAs,warning=FALSE}
+``` {r PERMANOVAs,warning=FALSE,echo = FALSE}
 GPdist=phyloseq::distance(physeq, "wunifrac")
 MONMDS= ordinate(physeq, "NMDS",GPdist)
 ```
 
-```{r}
+```{r,echo = FALSE}
 adonis(GPdist ~ Location, as(sample_data(physeq), "data.frame"))
 ```
 
 #Random Forest
 ##By Location
-```{r}
+```{r,echo = FALSE}
 ForestData=physeq#Change this one so you dont have to rewrite all variables
 predictors=t(otu_table(ForestData))
 dim(predictors)
